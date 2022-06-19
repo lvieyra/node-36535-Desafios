@@ -1,4 +1,4 @@
-const productos = [
+let productos = [
     {
         "id":"1",
         "nombre":"Queso Azul",
@@ -40,4 +40,7 @@ const productos = [
         "img": "quesoPentagran.jpg"
     }
 ];
+
+
 module.exports = productos;
+                  
