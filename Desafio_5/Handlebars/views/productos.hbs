@@ -1,0 +1,30 @@
+<div class="card bg-dark bg-gradient text-white">
+          <div class="card-header bg-dark text-center d-flex justify-content-between align-items-center">
+            <strong>Lista de productos</strong>
+            <a class="btn btn-primary" href="/" role="button">Nuevo producto</a>
+          </div>
+          <div class="card-body">
+            {{#if productos.length }}
+                <table class="table table-bordered text-white">
+                    <thead>
+                        <tr class="text-center">
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Foto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each productos }}
+                            <tr class="text-center">
+                                <td> {{ title }} </td>
+                                <td> {{ price }} </td>
+                                <td class="w-25 h-25"> <img class="img-thumbnail" src="{{ thumbnail }}" alt="{{ title }}" /> </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            {{else}}
+                <p> No hay productos </p>
+            {{/if}}
+          </div>
+        </div>
