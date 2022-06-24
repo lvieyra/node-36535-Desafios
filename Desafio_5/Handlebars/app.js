@@ -2,9 +2,12 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const exphbs = require('express-handlebars');
+
 //Settings
 app.set('port', process.env.PORT || 8080);
 app.set('views', path.join(__dirname, 'views'));
+
+// Se indica el directorio donde se almacenarán las plantillas 
 app.engine('.hbs', exphbs.engine({
     defaultLayout: 'main',
     layoutsDir: path.join(app.get('views'), 'layouts'),
@@ -12,8 +15,9 @@ app.engine('.hbs', exphbs.engine({
     extname: '.hbs'
 }));
 
-
+// Se indica el motor del plantillas a utilizar
 app.set('view engine', '.hbs');
+
 //middleware
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.urlencoded({ extended: true }));
@@ -40,11 +44,6 @@ app.get('/productos', (req, res) => {
     console.log(req.body);
     res.render('productos.hbs',{productos});
     });
-
-
-
-
-
 
 app.listen(app.get('port'), () => {
     console.log(`El servidor a sido levantado en port ${app.get('port')}`);
