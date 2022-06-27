@@ -10,11 +10,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 const productos=[]; 
 const mensajes=[]; 
 io.on('connection',(socket) =>{
-    console.log('New user')
     
     socket.emit('productos',productos);
     socket.on('agregarProducto',(data) =>{
-        console.log(data);
+       
         productos.push(data);
             io.sockets.emit('productos',productos);
     });
@@ -22,7 +21,7 @@ io.on('connection',(socket) =>{
     socket.emit('mensajes',mensajes);
 
     socket.on('agregarMensaje',(data) =>{
-        console.log(data);
+       
         if (data.email =='' && data.message == '') { data.date=''};
         mensajes.push(data);
         io.sockets.emit('mensajes',mensajes);
