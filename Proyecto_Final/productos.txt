@@ -1,0 +1,1 @@
+[{"id":"4","nombre":"sprite","descripcion":"gaseosa","codigo":"53","foto":"jpg","precio":"300","stock":"6"},{"id":5,"nombre":"harina","descripcion":"blanca 000","codigo":"5","foto":"a4qq","precio":"2243","stock":"36"},{"id":6,"timestamp":1656642289256,"nombre":"Atun","descripcion":"conserva","codigo":"533","foto":"jpg","precio":"200","stock":"62"}]
