@@ -1,1 +1,0 @@
-[{"id":1,"timestamp":1656857211002,"nombre":"azucar","codigo":"100"},{"id":2,"timestamp":1656857296937,"nombre":"harina","codigo":"200"},{"id":3,"timestamp":1656857319517,"nombre":"aceite","codigo":"300"},{"id":5,"timestamp":1656857358105,"nombre":"yerba","codigo":"500"}]
