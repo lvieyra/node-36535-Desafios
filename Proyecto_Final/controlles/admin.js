@@ -1,16 +1,10 @@
-// const getAllProductos = (req,res)=> {
-
-//     res.send({list:[1,2,3,4,5,6,7,8,9]})
-// };
-const express = require('express');
 const fs = require('fs/promises');
 const contenedor = require('../models/contenedor.js');
-const productos = require('../models/productos.js');
 const recipiente = new contenedor('productos.txt',fs);
 
 const getProducto = (req,res)=> {
     const id = req.params.id;
-    console.log(id);
+    
     if (!id) {
         recipiente.getAll().then(val => res.status(200).json(val));
     }else{
@@ -28,7 +22,7 @@ const getProducto = (req,res)=> {
 const createProducto = (req,res)=>{
     try{
         const producto = req.body;
-    console.log(producto);
+
      recipiente.save(producto);
      res.status(201).json(producto);
 
@@ -45,7 +39,7 @@ const updateProducto = (req,res)=>{
         res.status(200).json(req.body)
     } catch (error) {
         {
-            error: 'Error del servidor'
+            error: 'Error del servidor' + error.message
         }
     }
    
