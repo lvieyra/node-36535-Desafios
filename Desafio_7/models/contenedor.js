@@ -1,4 +1,4 @@
-const { json } = require('express');
+
 
 class Contenedor{
     constructor(){
@@ -10,13 +10,9 @@ class Contenedor{
     
     async getAll(){
         try {
-            console.log(' entre a productos')
-           // const productos = await this.knex(this.table).select();
-           console.log(' entre a productos' + JSON.parse(productos));
-           // return await this.knex.select('*').table('productos')
-           return await knex.select('*').from('productos')
             
-            // return await this.knex.from(this.table).select('*')
+          return  this.knex(this.table).select('*');
+          
         } catch (error) {
             console.log('Problema para seleccionar productos')
         }

@@ -9,7 +9,8 @@ async function pintar(productos) {
     document.querySelector('#productos').innerHTML = templateHtml;
 }
 socket.on('productos', (data)=>{
-    pintar(data);
+    console.log(data);
+    pintar(data)
 });
 
 const agregarProductos = document.querySelector('#agregarProducto'); 
@@ -29,26 +30,29 @@ const agregarMensajes = document.querySelector('#agregarMensajes');
 agregarMensajes.addEventListener('submit', (e)=>{
     e.preventDefault();
      const mensaje ={
-        email: document.querySelector('#email').value,
-        date: new Date().toLocaleString('es-AR'),
-        message: document.querySelector('#message').value
+        usermail: document.querySelector('#email').value,
+        fecha: new Date().toLocaleString('es-AR'),
+        mensaje: document.querySelector('#message').value
      }
      agregarMensajes.reset();
      socket.emit('agregarMensaje',mensaje);
 }); 
 
-function rends(mensajes) {
+ function rends(mensajes) {
    
-    const html= mensajes.map( (mensaje) =>{
+    const html=  mensajes.map( mensaje =>{
         return `<div>
-              <strong>${mensaje.email}</strong>
-              <span>${mensaje.date}</span> 
-              <em>${mensaje.message}</em>
+              <strong>${mensaje.usermail}</strong>
+              <span>${mensaje.fecha}</span> 
+              <em>${mensaje.mensaje}</em>
         </div>`;
     }).join('');
     document.querySelector('#mensajes').innerHTML = html;
-    return false          
+    return  false          
 }
-socket.on('mensajes', (data)=>{
-    rends(data)
+
+
+socket.on('mensajes',  data =>{
+    
+     rends(data)
 });

@@ -1,5 +1,6 @@
 const knex = require('./bd.js');
 
+
 knex.schema.hasTable('productos').then(function(exists) {
     if (!exists) {
       return knex.schema.createTable('productos', function(table) {
@@ -8,5 +9,8 @@ knex.schema.hasTable('productos').then(function(exists) {
                 table.integer('price').notNull(),
                 table.string('thumbnail')
       }).then(()=>{console.log('La table fue creada')});
+    }else{
+        return knex.schema.dropTableIfExists('productos').then(()=>{console.log('La table fue eliminada')});
     }
   });
+
