@@ -1,8 +1,7 @@
 
 
-const  ProductoDaoMongo  = require('../dao/productos/productosDaoMongo.js')
-const productoDao = new ProductoDaoMongo()
-
+const {productoSeleccionado : producto}  = require('../dao/index.js')
+const productoDao = new producto();
 const getProducto =  async (req,res)=> {
     const {id} = req.params;
     let response;
@@ -46,8 +45,9 @@ const createProducto = async(req,res)=>{
 };
 const updateProducto = async (req,res)=>{
     try {
-        
-      await  productoDao.actualizacionProducto(req.params.id,req.body);
+        console.log( req.params.id)
+        console.log(req.body) 
+      await  productoDao.actualizacionProducto(req.body,req.params.id);
         res.status(200).json(req.body)
     } catch (error) {
         res.send(error.message)

@@ -1,18 +1,21 @@
-const ContainerMongo = require('../../containers/ContainerMongo')
-const carritoModel = require('../../models/carrito')
+const {ContainerFirestore} = require('../../containers/containerFirestore')
 
-class CarritoDaoMongoDB extends ContainerMongo {
+class CarritoDaoFirestore extends ContainerFirestore {
 	constructor(){
-		super(carritoModel)
+		super('carritos')
+        
 	}
+   
 
     async saveCarrito(){
         let carrito = {};
         carrito.timestamp = Date.now();
         carrito.productos = [];
         const creado = await this.save(carrito)
+       
         return creado.id
     }
+
     async deleteCarrito(cartId){
         try {
             
@@ -33,9 +36,11 @@ class CarritoDaoMongoDB extends ContainerMongo {
         }
         
     }
+
+
     async listarProductosCarrito(req){
         try {
-            const carritos =  await this.getAllCarritos();
+            const carritos =  await this.getAll();
             const index = carritos.findIndex(carrito =>  carrito.id == req.params.id);
             if(index != -1){
                 return carritos[index]
@@ -53,20 +58,22 @@ async addProductCart(req,res) {
     try {
             const producto = req.body;
             
-            const carritos = await this.getAllCarritos();
+            const carritos = await this.getAll();
+            
            
             const index = carritos.findIndex(carrito =>  carrito.id == req.params.id)
-            
-            
+           
             if(index != -1){
-                const productos = carritos[index].productos;
+                console.log(carritos[index].data.productos)
+                const productos = carritos[index].data.productos;
                 const ids = productos.map(p => (p.id));
                 const proximo =  ids.length === 0 ? 1 : Math.max(...ids) + 1;
                 const item = {id:proximo, timestamp:Date.now(), nombre:producto.nombre,descripcion:producto.descripcion,codigo:producto.codigo,foto:producto.foto,precio:producto.precio,stock:producto.stock};
                
-                carritos[index].productos.push(item);
+                productos.push(item);
                
-                this.save(carritos);
+               
+              await  this.update(carritos[index].data,req.params.id);
                 
             }else{
                 console.log(`el ${req.params.id} no exite`)
@@ -82,16 +89,18 @@ async addProductCart(req,res) {
  async  eliminarUnProductoCarrito(req){
         try {
            
-            const carritos = await this.getAllCarritos();
+            const carritos = await this.getAll();
             const index = carritos.findIndex(carrito =>  carrito.id == req.params.id);
+            
             if(index != -1){
-                const productos = carritos[index].productos;
+                const productos = carritos[index].data.productos;
                 const indice = productos.findIndex(p =>  p.id == req.params.id_prod);
+                
                 if (indice != -1){
                     const items = productos.filter(p => p.id != req.params.id_prod);
-                    carritos[index].productos = items;
-                    
-                    this.save(carritos);
+                    carritos[index].data.productos = items;
+                    console.log(carritos[index].data.productos)
+                    await  this.update(carritos[index].data,req.params.id);
                 }else{
                     return indice
                 }
@@ -104,4 +113,4 @@ async addProductCart(req,res) {
     }
     }
 
-module.exports = CarritoDaoMongoDB
+module.exports = CarritoDaoFirestore

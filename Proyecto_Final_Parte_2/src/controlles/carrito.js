@@ -1,6 +1,7 @@
-const CarritoDaoMongoDB = require('../dao/carrito/carritosDaoMongo.js')
-const carritoDao = new CarritoDaoMongoDB();
-
+// const CarritoDaoMongoDB = require('../dao/carrito/carritosDaoMongo.js')
+// const carritoDao = new CarritoDaoMongoDB();
+const {carritoSeleccionado : carrito}  = require('../dao/index.js')
+const carritoDao = new carrito();
 const agregaCarrito = async(req,res)=>{
     try{
        const id = await carritoDao.saveCarrito(req.body)
@@ -13,15 +14,24 @@ const agregaCarrito = async(req,res)=>{
     
     }
 };
-const eliminaCarrito = async (require,response)=>{
+const eliminaCarrito = async (req,res)=>{
+
     try {
-        const ids = require.params.id
         
-       await carritoDao.deleteCarrito(ids)
-        response.status(200).json({
+  
+      const indice =  await carritoDao.deleteCarrito(req.params.id)
+       
+       if(indice != -1){
+        res.status(200).json({
             ok: true,
             message: 'El carrito fue eliminado'
         })
+       }else{
+        res.send(`El ${req.params.id} no existe`)
+       }
+        
+       
+        
     } catch (error) {
         console.log(`Error al eliminar carrito ${error}`)
     }
@@ -43,7 +53,7 @@ const listProductosCarrito = async (req,res)=>{
 const agregarProductoCarrito = async (req,res)=>{
     try {
            const contenedor = carritoDao.addProductCart(req)
-           console.log('pase contenedor')
+           
             if(contenedor) {
                 res.status(200).json({
                     ok: true,
