@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-mongoose.connect("mongodb://localhost:27017/UserDB", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
-
 const UserSchema = mongoose.Schema({
     username: { type: String },
     email: { type: String },
@@ -20,10 +15,7 @@ UserSchema.pre("save", function(next) {
     next();
 });
 
-//helpful functions: compare passwords
-// UserSchema.methods.comparePassword = function(plaintText, callback) {
-//     return callback(null, bcrypt.compareSync(plaintText, this.password));
-// }
+
 UserSchema.methods.comparePassword = (password, hash) => {
     let comp = bcrypt.compareSync(password, hash)
     return comp;
