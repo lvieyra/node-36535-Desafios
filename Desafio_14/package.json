@@ -1,0 +1,38 @@
+{
+  "name": "desafio_11",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js --port 3000 --mode FORK",
+    "devNodemon": "nodemon app.js --port 3000 --mode FORK",
+    "pm2Fork": "pm2 start app.js --name server --watch -- --port 3000 --mode FORK",
+    "pm2Cluster": "pm2 start app.js -i max --name server --watch -- --port 8080 --mode FORK ",
+    "pm2Monitor": "pm2 monit",
+    "pm2DeleteAll": "pm2 delete all",
+    "testArtillery": "artillery quick --count 50 -n 40 http://localhost:8081?max=100000 > result_fork.txt"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "compression": "^1.7.4",
+    "connect-mongo": "^4.6.0",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-handlebars": "^6.0.6",
+    "express-session": "^1.17.3",
+    "log4js": "^6.6.1",
+    "mongoose": "^6.4.5",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "yargs": "^17.5.1"
+  },
+  "devDependencies": {
+    "artillery": "^2.0.0-22",
+    "nodemon": "^2.0.19",
+    "pm2": "^5.2.0"
+  }
+}
