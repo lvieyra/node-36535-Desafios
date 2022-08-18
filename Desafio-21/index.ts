@@ -17,6 +17,7 @@ const requestHandler = async (req: Request): Promise<Response> => {
     return new Response(JSON.stringify(colors));
 };
 
-console.log(`HTTP webserver running. Access it at: http://localhost:3000/`);
+console.log(`HTTP webserver running. Access it at: http://localhost:8080/`);
 
 await serve(requestHandler, { port });
+
