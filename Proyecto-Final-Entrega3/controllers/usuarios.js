@@ -1,0 +1,82 @@
+const { request, response } = require("express");
+const jwt = require("jsonwebtoken");
+const bcryptjs = require("bcryptjs");
+
+const Usuario = require("../models/usuario");
+
+const usuariosGet = async (req = request, res = response) => {
+  const { limite = 5, desde = 0 } = req.query;
+
+  const [total, usuarios] = await Promise.all([
+    Usuario.countDocuments({ estado: true }),
+    Usuario.find({ estado: true }).skip(Number(desde)).limit(Number(limite)),
+  ]);
+
+  const pagina = usuarios.length;
+
+  res.json({
+    msg: "ok",
+    total,
+    pagina,
+    usuarios,
+  });
+};
+
+const usuariosPut = async (req = request, res = response) => {
+  const { id } = req.params;
+  console.log(id);
+  console.log(req.body.nombre )
+  const { _id, password, google, correo, ...resto } = req.body;
+
+  if (password) {
+    // encriptar password
+    const salt = bcryptjs.genSaltSync();
+    resto.password = bcryptjs.hashSync(password, salt);
+  }
+console.log(req.body)
+  //const usuario = await Usuario.findByIdAndUpdate(id, resto, { new: true });
+  const usuario = await Usuario.findByIdAndUpdate(id, resto);
+  res.json({
+    msg: "ok",
+    usuario,
+  });
+};
+
+const usuariosPost = async (req = request, res = response) => {
+  const { nombre, correo, password, rol } = req.body;
+  
+  const usuario = new Usuario({ nombre, correo, password, img: `/files/${req.file.filename}`, rol });
+  
+
+  // encriptar password
+  const salt = bcryptjs.genSaltSync();
+  usuario.password = bcryptjs.hashSync(password, salt);
+
+  // grabo en la BD
+  await usuario.save();
+  res.json({
+    msg: "ok",
+    usuario,
+  });
+};
+
+const usuariosDelete = async (req = request, res = response) => {
+  const { id } = req.params;
+  // Ojo el Delete no funciona como antes
+  // esto no deberia usarse
+  // const usuario = Usuario.findByIdAndDelete(id);
+  // Esto es lo mejor marcar con un estado en false para hacer un borrado logico no fisico
+  const usuario = await Usuario.findByIdAndUpdate(
+    id,
+    { estado: false },
+    { new: true }
+  );
+  res.json(usuario);
+};
+
+module.exports = {
+  usuariosGet,
+  usuariosPut,
+  usuariosPost,
+  usuariosDelete,
+};
