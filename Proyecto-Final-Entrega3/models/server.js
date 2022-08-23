@@ -49,6 +49,7 @@ class Server {
     this.app.use(this.productosPath, require("../routes/productos"));
     this.app.use(this.carritosPath, require("../routes/carritos"));
     this.app.use(this.checkoutPath, require("../routes/checkout"));
+    
     //loguear las peticiones no implementadas
     this.app.use(loguearRutaNoImplementada);
   }

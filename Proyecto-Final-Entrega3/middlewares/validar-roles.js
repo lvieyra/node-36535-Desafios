@@ -1,7 +1,7 @@
 const { request, response } = require("express");
 
 const isAdminRole = (req = request, res = response, next) => {
-  console.log(req.userAuth)
+ 
   if (!req.userAuth) {
     return res
       .status(500)

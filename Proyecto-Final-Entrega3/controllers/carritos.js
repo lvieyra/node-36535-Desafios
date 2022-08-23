@@ -15,69 +15,110 @@ const productosGet = async(req, res) => {
 }
 
 const carritosCreate = async(req, res) => {
-    const carrito = req.body;
-    const resultado = await carritoService.carritosCreate(carrito);
-    if (resultado.error) {
-        res.status(400).json({error:resultado.error})
-    }
+
+    try {
+        const carrito = req.body;
+        const resultado = await carritoService.carritosCreate(carrito);
+        if (resultado.error) {
+            res.status(400).json({error:resultado.error})
+        }
     
     res.status(201).json(resultado);
+    } catch (error) {
+        logger.log("error", `Hubo un error en el login: ${error}`);
+        console.log(error.message)
+    }
+    
 }
 
 const carritosDelete = async(req, res) => {
-    const id = req.params.id || null;
-    const resultado = await carritoService.carritosDelete(id);
+    try {
+        const id = req.params.id || null;
+        const resultado = await carritoService.carritosDelete(id);
     if (resultado.error) {
         res.status(400).json({error:resultado.error})
     }
     
-    res.status(200).json(resultado.carrito);
+        res.status(200).json(resultado.carrito);
+    } catch (error) {
+        logger.log("error", `Hubo un error en el login: ${error}`);
+        console.log(error.message)
+    }
+    
 }
 
 const carritosAddProduct = async(req, res) => {
-    const idCart = req.params.id || null;
-    const idProduct = req.body.id;
-    const resultado = await carritoService.carritosAddProduct(idCart, idProduct);
-    if (resultado.error) {
-        res.status(400).json({error:resultado.error})
+
+    try {
+        const idCart = req.params.id || null;
+        const idProduct = req.body.id;
+        const resultado = await carritoService.carritosAddProduct(idCart, idProduct);
+        if (resultado.error) {
+            res.status(400).json({error:resultado.error})
+        }
+        res.status(200).json(resultado);
+    } catch (error) {
+        logger.log("error", `Hubo un error en el login: ${error}`);
+        console.log(error.message)
     }
-    res.status(200).json(resultado);
+    
 }
 
 const carritosGetProducts = async(req, res) => {
-    const idCart = req.params.id || null;
 
-    const resultado = await carritoService.carritosGetProducts(idCart);
-    if (resultado.error) {
-        res.status(400).json({error:resultado.error})
+    try {
+        const idCart = req.params.id || null;
+
+        const resultado = await carritoService.carritosGetProducts(idCart);
+        if (resultado.error) {
+            res.status(400).json({error:resultado.error})
+        }
+
+       res.status(200).json(resultado);
+    } catch (error) {
+        logger.log("error", `Hubo un error en el login: ${error}`);
+        console.log(error.message)
     }
-
-    res.status(200).json(resultado);
+    
 }
 
 const carritosDeleteProduct = async(req, res) => {
-    const idCart = req.params.id || null;
-    const idProduct = req.params.id_prod || null;
 
-    const resultado = await carritoService.carritosDeleteProduct(idCart, idProduct);
+    try {
+        const idCart = req.params.id || null;
+        const idProduct = req.params.id_prod || null;
+
+        const resultado = await carritoService.carritosDeleteProduct(idCart, idProduct);
     if (resultado.error) {
         res.status(400).json({error:resultado.error})
     }
 
-    res.status(200).json(resultado);
+      res.status(200).json(resultado);
+    } catch (error) {
+        logger.log("error", `Hubo un error en el login: ${error}`);
+        console.log(error.message)
+    }
+    
 }
 
 const carritoCheckout = async (req, res) => {
-  const idCart = req.params.id_carrito || null;
-  const resultado = await carritoService.carritosGet(idCart);
-  if (resultado.error) {
-    return res.status(400).json({ error: resultado.error });
-  }
-  //Aca se puede mandar el mail con el checkout
-  await sendCart(resultado.email, resultado.productos);
-  //Luego del checkout se borra el carrito
-  await carritoService.carritosDelete(idCart);
-  res.status(200).json(resultado);
+
+    try {
+        const idCart = req.params.id_carrito || null;
+        const resultado = await carritoService.carritosGet(idCart);
+        if (resultado.error) {
+            return res.status(400).json({ error: resultado.error });
+        }
+        //Aca se puede mandar el mail con el checkout
+        await sendCart(resultado.email, resultado.productos);
+        //Luego del checkout se borra el carrito
+        await carritoService.carritosDelete(idCart);
+        res.status(200).json(resultado);
+    } catch (error) {
+        logger.log("error", `Hubo un error en el login: ${error}`);
+        console.log(error.message)
+    }
+  
 };
 
 

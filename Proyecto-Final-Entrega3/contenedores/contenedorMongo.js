@@ -5,7 +5,9 @@ class contenedorMongo {
   }
 
   getById = async (id) => {
+    
     let results = await this.model.findById(id)
+    
     return results;
   }
 
@@ -15,7 +17,9 @@ class contenedorMongo {
   };
 
   save = async (objeto) => {
+    console.log(objeto);
     let result = await this.model.create(objeto);
+    console.log(result);
     return result;
   };
 

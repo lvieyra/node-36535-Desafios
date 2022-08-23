@@ -15,7 +15,8 @@ const sendSMS = (user) => {
             to: user.telefono,
             from: process.env.TWILIO_FROM_NUMBER,
         })
-        .then((message) => {
+        .then(
+            (message) => {
             logger.log(
                 "error",
                 `Hubo un error al enviar el SMS: ${message}`

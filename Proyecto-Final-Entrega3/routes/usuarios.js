@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
 const { upload } = require("../middlewares/multer-file")
+const Usuario = require("../models/usuario.js");
 
 const {
   validarCampos,
@@ -24,29 +25,51 @@ const {
   usuariosPut
 } = require("../controllers/usuarios.js");
 
+const Role = require("../models/role.js");
+
 router.get("/", usuariosGet);
 
 router.put(
   "/:id",
   [
-    check("id").custom(existeUsuarioPorId),
-   // check("rol").custom(esRoleValido),
+    validarJWT,
     validarCampos,
+    check("id").custom(existeUsuarioPorId),
+    check('rol').custom(rol => esRoleValido(rol))
+   
+    
   ],
-(req,res)=>{
-  res.send(req.body)
-}
-  //usuariosPut
+  upload.single('img'),
+  usuariosPut
+  
 );
+
+// router.put('/:id', upload.single('img'), async (req, res) => {
+//   const { id } = req.params
+//   const { nombre } = req.body
+//   const { img } = req.file.filename // obtenemos el path del archivo subido por multer
+//   try {
+//     await Usuario.findByIdAndUpdate(id, { nombre, img:`/files/${req.file.filename}` })
+//     res.json({
+//       msg: "ok"
+//     })
+//   } catch (e) {
+//     console.log(e.message)
+//   }
+// })
+
 
 router.post( "/",
   [ 
     validarCampos,
     check("nombre", "El nombre no puede estar vacio").not().isEmpty(),
+    check("direccion", "La dirección no puede estar vacio").not().isEmpty(),
+    check("edad", "La edad no puede estar vacio").not().isEmpty(),
+    check("telefono", "El telefono no puede estar vacio").not().isEmpty(),
     check("password","El password tiene que tener al menos 6 caracteres").isLength({ min: 6 }),
     check("correo", "La dirección de correo no es valida").isEmail(),
     check("correo").custom(emailExiste),
-   // check('rol').custom(rol => esRoleValido(rol))
+    check('rol').custom(rol => esRoleValido(rol))
     
   ],
   [upload.single('img')],

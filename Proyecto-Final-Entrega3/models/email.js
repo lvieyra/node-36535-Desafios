@@ -27,7 +27,7 @@ async function createAlta(user) {
         subject: "Nuevo Registro",
         html: `
             <div>
-                <p>Email: ${user.email}</p>
+                <p>Email: ${user.correo}</p>
                 <p>Nombre: ${user.nombre}</p>
                 <p>Dirección: ${user.direccion}</p>
                 <p>Edad: ${user.edad}</p>
@@ -67,7 +67,7 @@ async function createCart(user, cart) {
     const info = await transporter.sendMail({
         from: `"${EMAIL_ADMIN_TITLE}" <${EMAIL_USER}>`,
         to: `${EMAIL_ADMIN}`,
-        subject: `Nuevo pedido: ${user.email} ${user.nombre}` ,
+        subject: `Nuevo pedido: ${user.correo} ${user.nombre}` ,
         html: `${header}${products}${total}`,
     });
 
@@ -78,10 +78,10 @@ async function createCart(user, cart) {
 
 }
 
-function sendAlta(user){
+const sendAlta = (user)=>{
     return createAlta(user).catch(console.error);
 }
-function sendCart(user, cart){
+const sendCart = (user, cart) =>{
     return createCart(user, cart).catch(console.error);
 }
 
@@ -89,5 +89,5 @@ function sendCart(user, cart){
 
 module.exports = {
     sendAlta,
-    sendCart,
+    sendCart
 }

@@ -16,6 +16,18 @@ const UsuarioSchema = Schema({
     type: String,
     required: [true, "El nombre de usuario es obligatorio"],
   },
+  direccion: {
+    type: String,
+    required: [true, "La dirección de usuario es obligatorio"],
+  },
+  edad: {
+    type: Number,
+    required: [true, "La edad de usuario es obligatorio"],
+  },
+  telefono: {
+    type: String,
+    required: [true, "El número de telefono de usuario es obligatorio"],
+  },
   correo: {
     type: String,
     required: [true, "El correo del usuario es obligatorio"],
@@ -29,17 +41,14 @@ const UsuarioSchema = Schema({
     type: String,
   },
   rol: {
-    type: String
-    //required: true,
+    type: String,
+    required: true,
   },
   estado: {
     type: Boolean,
     default: true,
-  },
-  google: {
-    type: Boolean,
-    default: false,
-  },
+  }
+ 
 });
 
 // aca puedo crear metodos personalizados, en este caso estoy sobreescribiendo el metodo

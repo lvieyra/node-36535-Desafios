@@ -62,12 +62,16 @@ class CarritoService {
         const productosCarrito = [];
         if (idCart !== null) {
             const carrito = await this.carritosDao.getById(idCart);
-            for(const prod of carrito.productos) {
-                const  {producto : productoCarrito}  = await productoService.productosGet(prod.producto.valueOf());
-                const producto = productoCarrito.toObject();
-                producto.cantidad = prod.cantidad
-                productosCarrito.push(producto);
-            };
+            if (carrito) {
+                for(const prod of carrito.productos) {
+                    const  {producto : productoCarrito}  = await productoService.productosGet(prod.producto.valueOf());
+                    const producto = productoCarrito.toObject();
+                    producto.cantidad = prod.cantidad
+                    productosCarrito.push(producto);
+                };
+            }
+            
+            
         }
 
         return productosCarrito;

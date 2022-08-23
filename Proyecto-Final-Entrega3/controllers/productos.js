@@ -1,45 +1,76 @@
 const ProductoService = require('../services/productos.js');
 const productoService = new ProductoService();
+const Producto = require('../models/producto.js');
 
 const productosGet = async(req, res) => {
-    const id = req.params.id || null;
-    const resultado = await productoService.productosGet(id);
+    try {
+        const id = req.params.id || null;
+        const resultado = await productoService.productosGet(id);
     if (resultado.error) {
         res.status(400).json({error:resultado.error})
     }
     
-    res.status(200).json(resultado.productos);
+        res.status(200).json(resultado);
+    } catch (error) {
+        logger.log("error", `Hubo un error en el login: ${error}`);
+        console.log(error.message)
+    }
+    
 }
 
 const productosCreate = async(req, res) => {
-    const producto = req.body;
-    const resultado = await productoService.productosCreate(producto);
+
+    try {
+        const {nombre,descripcion, codigo,precio,stock} = req.body;
+
+        const producto = new Producto({ nombre, descripcion, codigo,imagen: `/files/${req.file.filename}`,precio,stock });
+        const resultado = await productoService.productosCreate(producto);
     if (resultado.error) {
         res.status(400).json({error:resultado.error})
     }
     
-    res.status(201).json(resultado.producto);
+    res.status(201).json(resultado);
+    } catch (error) {
+        logger.log("error", `Hubo un error en el login: ${error}`);
+        console.log(error.message)
+    }
+    
 }
 
 const productosUpdate = async(req, res) => {
-    const id = req.params.id || null;
-    const producto = req.body;
-    const resultado = await productoService.productosUpdate(id, producto);
-    if (resultado.error) {
-        res.status(400).json({error:resultado.error})
+
+    try {
+        const id = req.params.id || null;
+        const{...resto} = req.body;
+        resto.imagen = `/files/${req.file.filename}`
+        const resultado = await productoService.productosUpdate(id, resto);
+        if (resultado.error) {
+            res.status(400).json({error:resultado.error})
+        }
+    
+        res.status(200).json(resultado.producto);
+    } catch (error) {
+        logger.log("error", `Hubo un error en el login: ${error}`);
+        console.log(error.message)
     }
     
-    res.status(200).json(resultado.producto);
 }
 
 const productosDelete = async(req, res) => {
-    const id = req.params.id || null;
-    const resultado = await productoService.productosDelete(id);
+
+    try {
+        const id = req.params.id || null;
+        const resultado = await productoService.productosDelete(id);
     if (resultado.error) {
         res.status(400).json({error:resultado.error})
     }
     
-    res.status(200).json(resultado.producto);
+       res.status(200).json(resultado.producto);
+    } catch (error) {
+        logger.log("error", `Hubo un error en el login: ${error}`);
+        console.log(error.message)
+    }
+    
 }
 
 module.exports = {
